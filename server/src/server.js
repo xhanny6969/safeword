@@ -154,9 +154,22 @@ function status() {
   ].join('\n')
 }
 
+let lastLocLog = 0
 async function onEvent(ev) {
-  const isOwner = tgState.ownerId != null && ev.fromId === tgState.ownerId
   const reply = (text, extra) => tg.sendMessage(ev.chatId, text, extra)
+  // The first person to write to the bot privately (a command, a text or a
+  // shared location) becomes the wearer.
+  if (tgState.ownerId == null && ev.chatType === 'private' && ev.fromId) {
+    tgState.ownerId = ev.fromId
+    tgState.ownerChatId = ev.chatId
+    engine.setName(ev.fromName.split(' ')[0])
+    persist()
+    log(`owner set: ${ev.fromName}`)
+    if (!(ev.type === 'command' && ev.cmd === '/start')) await reply(HELP)
+  }
+  const isOwner = tgState.ownerId != null && ev.fromId === tgState.ownerId
+  if (ev.type !== 'location') log(`tg ${ev.type}${ev.cmd ? ` ${ev.cmd}` : ''} in ${ev.chatType ?? 'button'}${isOwner ? ' (wearer)' : ''}`)
+  else if (Date.now() - lastLocLog > 60_000) { lastLocLog = Date.now(); log(`tg location${ev.live ? ' (live)' : ''} in ${ev.chatType}${isOwner ? ' (wearer)' : ' (ignored: not the wearer)'}`) }
 
   if (ev.type === 'callback') {
     if (ev.data === 'checkin') {
@@ -180,13 +193,6 @@ async function onEvent(ev) {
   if (ev.chatType === 'private') {
     if (tgState.ownerId != null && !isOwner) return void (await reply('This SafeWord bot belongs to someone else.'))
     if (ev.type !== 'command') return void (await reply('Commands: /status, /codeword, /every, /test, /help'))
-    if (ev.cmd === '/start' && tgState.ownerId == null) {
-      tgState.ownerId = ev.fromId
-      tgState.ownerChatId = ev.chatId
-      engine.setName(ev.fromName.split(' ')[0])
-      persist()
-      log(`owner set: ${ev.fromName}`)
-    }
     switch (ev.cmd) {
       case '/start':
       case '/help':
@@ -325,6 +331,7 @@ const server = createServer(async (req, res) => {
       const b = await json(req)
       switch (url.pathname) {
         case '/api/dev/say': await engine.voice(String(b.text ?? '')); break
+        case '/api/dev/reset': engine.reset({ keepCircle: Boolean(tgState.circleChatId) }); break
         case '/api/dev/circle': engine.setCircle({ name: b.name || 'Family' }); break
         case '/api/dev/location': engine.setLocation({ lat: Number(b.lat), lon: Number(b.lon), live: b.live !== false }); break
         case '/api/dev/codeword': engine.setCodeword(String(b.word ?? '')); break

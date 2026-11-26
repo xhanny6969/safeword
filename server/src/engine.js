@@ -97,6 +97,19 @@ export class Engine extends EventEmitter {
 
   // ---- settings, circle, location ---------------------------------------------
 
+  /** Clears sessions, alerts, location and the safe word (demo/dev reset). */
+  reset({ keepCircle = false } = {}) {
+    this.session = null
+    this.alerts = []
+    this.location = null
+    this.inbox = []
+    this.settings.codeword = ''
+    if (!keepCircle) this.circle = null
+    this.card = 'main'
+    this.flashMsg = null
+    return this.changed('reset')
+  }
+
   setCircle(circle) {
     this.circle = circle
     return this.changed('circle')
