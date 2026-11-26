@@ -1,0 +1,20 @@
+{
+  "name": "safeword-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "SafeWord backend: check-in timer, silent alerts and Telegram circle for the Even G2 app, with local speech-to-text.",
+  "scripts": {
+    "start": "node src/server.js",
+    "demo": "node src/server.js --dev",
+    "test": "node --test test/",
+    "fetch-model": "node scripts/fetch-model.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@huggingface/transformers": "^3.8.1"
+  }
+}

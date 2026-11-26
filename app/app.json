@@ -1,0 +1,25 @@
+{
+  "package_id": "com.krakal.safeword",
+  "edition": "202601",
+  "name": "SafeWord",
+  "version": "0.1.0",
+  "min_sdk_version": "0.0.16",
+  "entrypoint": "index.html",
+  "permissions": [
+    {
+      "name": "network",
+      "desc": "Talks to your own SafeWord server for check-ins, alerts and speech-to-text.",
+      "whitelist": [
+        "http://127.0.0.1:8788",
+        "http://localhost:8788"
+      ]
+    },
+    {
+      "name": "g2-microphone",
+      "desc": "Push-to-talk: hold the touchpad and say \"I'm fine\", \"tell them I'm on the train\" or \"I'm home\". Audio goes only to your own server."
+    }
+  ],
+  "supported_languages": [
+    "en"
+  ]
+}

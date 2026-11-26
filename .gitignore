@@ -1,0 +1,9 @@
+node_modules/
+dist/
+*.ehpk
+.env
+server/data/
+server/models/
+shots/
+notes/
+*.log
