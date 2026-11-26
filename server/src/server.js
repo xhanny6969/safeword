@@ -130,7 +130,7 @@ const HELP = [
   '',
   '1. Make a Telegram group with the people who should hear if something is wrong, add me, and send /circle there.',
   '2. Pick a safe word: /codeword pineapple (I delete that message right away). Say it in any sentence while holding the touchpad, and your circle is alerted without a sound.',
-  '3. Share your live location in the group (📎 → Location → Share My Live Location), so alerts carry a pin.',
+  '3. Share your live location with me in this chat (📎 → Location → Share My Live Location). It stays here: your circle only gets a pin when an alert goes out.',
   '',
   'On the glasses: tap to start check-ins, tap again whenever you are OK. Swipe for a silent SOS. Hold and speak: "check on me every 20 minutes", "I\'m fine", "tell them I\'m on the train", "I\'m home".',
   '',
