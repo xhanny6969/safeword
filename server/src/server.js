@@ -332,6 +332,10 @@ const server = createServer(async (req, res) => {
       switch (url.pathname) {
         case '/api/dev/say': await engine.voice(String(b.text ?? '')); break
         case '/api/dev/test': await engine.raise('test', { via: 'dev' }); break
+        // Recording helpers: jump to the next check-in (a time-lapse), and show the footer the app
+        // shows while the touchpad is held, when a recorded clip stands in for the G2 microphone.
+        case '/api/dev/due': if (engine.session) { engine.session.dueAt = Date.now(); await engine.tick() } break
+        case '/api/dev/listening': engine.flash('● listening · release to send'); engine.refresh('listening'); break
         case '/api/dev/reset': engine.reset({ keepCircle: Boolean(tgState.circleChatId) }); break
         case '/api/dev/circle': engine.setCircle({ name: b.name || 'Family' }); break
         case '/api/dev/location': engine.setLocation({ lat: Number(b.lat), lon: Number(b.lon), live: b.live !== false }); break

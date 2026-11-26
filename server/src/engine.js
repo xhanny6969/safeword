@@ -335,7 +335,7 @@ export class Engine extends EventEmitter {
         s.prompted = true
         this.card = 'main'
         const id = await this.safely('wearer', () => this.out.wearer(
-          `⏰ Check-in due (${V.hhmm(s.dueAt, this.settings.tz)}). Are you OK? Your circle is alerted in ${Math.round(this.settings.graceSec / 60) || 1} min.`,
+          `⏰ Check-in due (${V.hhmm(s.dueAt, this.settings.tz)}). Are you OK? Your circle is alerted in ${V.span(this.settings.graceSec)}.`,
           { buttons: { inline_keyboard: [[{ text: "✅ I'm OK", callback_data: 'checkin' }]] } },
         ))
         s.promptMsgId = id ?? null

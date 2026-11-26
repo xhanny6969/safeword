@@ -126,6 +126,8 @@ export function card(e) {
 }
 
 /** The alert message in the circle group; edited as people respond. */
+export const span = (sec) => (sec < 60 ? `${Math.round(sec)} s` : `${Math.round(sec / 60)} min`)
+
 export function alertText(a, { name, location, now, tz, graceSec }) {
   const head = {
     sos: `🚨 SILENT SOS from ${name}`,
@@ -136,7 +138,7 @@ export function alertText(a, { name, location, now, tz, graceSec }) {
   const what = {
     sos: 'Sent from their glasses without a sound. They may not be able to talk: text first, call if there is no answer.',
     duress: `They sounded fine on purpose, so someone may be listening. If you call, keep it casual and don't mention SafeWord.${a.heard ? `\nThey said: "${clip(a.heard, 120)}"` : ''}`,
-    missed: `The ${a.dueAt ? hhmm(a.dueAt, tz) : ''} check-in got no answer for ${Math.round(graceSec / 60) || 1} min. Text or call them.`,
+    missed: `The ${a.dueAt ? hhmm(a.dueAt, tz) : ''} check-in got no answer for ${span(graceSec)}. Text or call them.`,
     test: 'Nothing is wrong. This is what an alert looks like: try the buttons.',
   }[a.kind]
   const lines = [`${head} · ${hhmm(a.at, tz)}`, '', what, '']
