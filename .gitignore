@@ -7,3 +7,5 @@ server/models/
 shots/
 notes/
 *.log
+video/
+audio/

@@ -331,6 +331,7 @@ const server = createServer(async (req, res) => {
       const b = await json(req)
       switch (url.pathname) {
         case '/api/dev/say': await engine.voice(String(b.text ?? '')); break
+        case '/api/dev/test': await engine.raise('test', { via: 'dev' }); break
         case '/api/dev/reset': engine.reset({ keepCircle: Boolean(tgState.circleChatId) }); break
         case '/api/dev/circle': engine.setCircle({ name: b.name || 'Family' }); break
         case '/api/dev/location': engine.setLocation({ lat: Number(b.lat), lon: Number(b.lon), live: b.live !== false }); break
